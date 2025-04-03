@@ -12,8 +12,7 @@ import userRoute from './routes/userRoute.js';
 import compression from 'compression';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import bcrypt from 'bcrypt';
-import User from './models/userModel.js';
+import authRouter from './routes/authRoute.js';
 
 dotenv.config();
 dbconnect();
@@ -55,32 +54,6 @@ app.use(
   })
 );
 
-// const securePassword = async (password) => {
-//     try {
-//       const passwordHash = await bcrypt.hash(password, 10);
-//       return passwordHash;
-//     } catch (error) {
-//       console.log(error.message);
-//     }
-//   };
-
-// const createUser = async(req,res)=>{
-//     console.log("user created");
-//     try {
-//         const password = "Admin@123";
-//         const hashed = await securePassword(password);
-//         const newUser = await User.create({
-//             name:"Cloud-Admin",
-//             loginId:"cloudadmin@gmail.com",
-//             password:hashed,
-//         })
-//         await newUser.save();
-//         console.log("user created");
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
-
 
 // Body Parsers
 app.use(express.json({
@@ -101,7 +74,8 @@ app.use(express.urlencoded({
 }));
 
 // Routes
-app.use('/api/', userRoute);
+app.use('/api/auth', authRouter);
+app.use('/api/user', userRoute);
 // Serve Static Files for Vite React project
 // app.use(express.static(path.join(__dirname, "view")));
 

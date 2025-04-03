@@ -198,31 +198,36 @@ export const refreshAccessToken = async (req, res) => {
 };
 
 // Logout controller
+// Logout controller
 export const logout = async (req, res) => {
-  try {
-    const refreshToken = req.cookies.refreshToken;
-    
-    // Remove token from store
-    if (refreshToken) {
-      refreshTokens.delete(refreshToken);
+    try {
+      // The issue is here - accessing cookies
+      const refreshToken = req.cookies?.refreshToken;
+      // Remove token from store
+      if (refreshToken) {
+        refreshTokens.delete(refreshToken);
+      }
+      
+      // Clear cookie
+      res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict'
+      });
+      
+      return res.status(200).json({
+        success: true,
+        message: 'Logged out successfully'
+      });
+      
+    } catch (error) {
+      console.error('Logout error:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Internal server error'
+      });
     }
-    
-    // Clear cookie
-    res.clearCookie('refreshToken');
-    
-    return res.status(200).json({
-      success: true,
-      message: 'Logged out successfully'
-    });
-    
-  } catch (error) {
-    console.error('Logout error:', error);
-    return res.status(500).json({
-      success: false,
-      message: 'Internal server error'
-    });
-  }
-};
+  };
 
 // Authentication middleware
 export const authenticateToken = (req, res, next) => {
@@ -267,3 +272,75 @@ export const authenticateToken = (req, res, next) => {
 // }
 
 // createUser();
+
+export const getUserProfile = async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const user = await User.findById(userId).select('-password');
+    //   console.log("here")
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found'
+        });
+      }
+      
+      return res.status(200).json({
+        success: true,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: 'admin'
+          // Add any other fields you want to return
+        }
+      });
+    } catch (error) {
+      console.error('Get profile error:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Internal server error'
+      });
+    }
+  };
+  
+  // Update user profile
+  export const updateUserProfile = async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const { name, email } = req.body;
+      
+      const user = await User.findById(userId);
+      
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found'
+        });
+      }
+      
+      // Update fields if provided
+      if (name) user.name = name;
+      if (email) user.email = email;
+      
+      // Save updates
+      await user.save();
+      
+      return res.status(200).json({
+        success: true,
+        message: 'Profile updated successfully',
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role
+        }
+      });
+    } catch (error) {
+      console.error('Update profile error:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Internal server error'
+      });
+    }
+  };
