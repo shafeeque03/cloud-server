@@ -1,0 +1,44 @@
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependency directories
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+.next/        # For Next.js build output
+out/          # For Next.js exported apps
+build/        # General build artifacts (e.g., React, Vue)
+.nuxt/        # For Nuxt.js
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Cache files
+.cache/
+.eslintcache
+.turbo/
+
+# Test-related files
+*.snap         # Jest snapshot files
+.nyc_output/   # NYC test coverage output
+coverage/      # Test coverage directory
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# OS-specific files
+.Trash-*/  # macOS trash files
