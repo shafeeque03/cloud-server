@@ -7,6 +7,7 @@ import fileUpload from 'express-fileupload';
 // import rateLimit from 'express-rate-limit'; // For rate limiting
 import mongoSanitize from 'express-mongo-sanitize'; // For preventing NoSQL injections
 import hpp from 'hpp'; // For preventing HTTP parameter pollution
+import cookieParser from 'cookie-parser';
 import dbconnect from './config/Database.js';
 import userRoute from './routes/userRoute.js';
 import compression from 'compression';
@@ -21,6 +22,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+app.use(cookieParser());
 
 
 
