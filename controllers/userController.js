@@ -2,18 +2,10 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import User from "../models/userModel.js";
-// Assuming you have a User model/database connection
-// import User from '../models/User';
-
-// Environment variables should be used for sensitive information
-const ACCESS_TOKEN_SECRET =
-  process.env.ACCESS_TOKEN_SECRET || "your_access_token_secret";
-const REFRESH_TOKEN_SECRET =
-  process.env.REFRESH_TOKEN_SECRET || "your_refresh_token_secret";
-const ACCESS_TOKEN_EXPIRY = "1m"; // Short-lived token
-const REFRESH_TOKEN_EXPIRY = "7d"; // Long-lived token
-
-// Store for refresh tokens - in production, use Redis or a database
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || "gvh857kjfdgs57j3";
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || "89grg5th2rth5mqps";
+const ACCESS_TOKEN_EXPIRY = "15m";
+const REFRESH_TOKEN_EXPIRY = "7d";
 const refreshTokens = new Set();
 
 // Generate tokens
