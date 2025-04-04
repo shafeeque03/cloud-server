@@ -70,7 +70,8 @@ export const fetchChildFolders = async (req, res) => {
   try {
     const { folderId } = req.params;
     const folders = await folderModel.find({ parent: folderId });
-    res.status(200).json(folders);
+    const parentFolder = await folderModel.findById(folderId);
+    res.status(200).json({folders, parentFolder});
   } catch (error) {
     console.error("Fetch folders error:", error);
     return res.status(500).json({
